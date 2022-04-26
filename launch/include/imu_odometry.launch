@@ -1,0 +1,7 @@
+<launch>
+
+    <rosparam file="$(find pl2i2-slam)/config/m2dgr/params_imu.yaml" command="load" />
+
+    <node pkg="pl2i2-slam" type="pl2i2_imuPreintegration" name="pl2i2_imuPreintegration" output="screen" respawn="true"/>
+
+</launch>

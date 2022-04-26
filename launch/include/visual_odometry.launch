@@ -1,0 +1,10 @@
+<launch>
+
+    <rosparam file="$(find pl2i2-slam)/config/m2dgr/params_camera.yaml" command="load" />
+
+    <node pkg="pl2i2-slam" type="pl2i2_lineFeature" name="pl2i2_lineFeature" output="screen" respawn="true"/>
+    <node pkg="pl2i2-slam" type="pl2i2_pointFeature" name="pl2i2_pointFeature" output="screen" respawn="true"/>
+    <node pkg="pl2i2-slam" type="pl2i2_visualOdometry" name="pl2i2_visualOdometry" output="screen" respawn="true"/>
+    <node pkg="pl2i2-slam" type="pl2i2_visualLoop" name="pl2i2_visualLoop" output="screen" respawn="true"/>
+
+</launch>

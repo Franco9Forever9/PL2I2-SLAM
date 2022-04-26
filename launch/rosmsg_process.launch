@@ -1,0 +1,5 @@
+<launch>
+
+    <node pkg="pl2i2_slam" type="rosmsg_process" name="rosmsg_process" output="screen" respawn="true"/>
+
+</launch>

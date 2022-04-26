@@ -1,0 +1,12 @@
+<launch>
+
+    <!-- IMU Preintegration -->
+    <include file="$(find pl2i2-slam/launch/include/imu_odometry.launch" />
+
+    <!-- Visual Odometry -->
+    <include file="$(find pl2i2-slam/launch/include/visual_odometry.launch" />
+
+    <!-- LiDAR Odometry -->
+    <include file="$(find pl2i2-slam/launch/include/lidar_odometry.launch" />
+
+</launch>
