@@ -19,8 +19,9 @@ namespace pl2i2_slam
                 subImg = nh.subscribe<sensor_msgs::Image>(topic, 1000, pl2i2_slam::GuidedFilter::imageHandler, this);
                 pubImg_0 = nh.advertise<sensor_msgs::Image>("/guided_filtered/iamge_0", 1000);
                 pubImg_1 = nh.advertise<sensor_msgs::Image>("/guided_filtered/iamge_1", 1000);
+                this->tProcess = std::thread(&GuidedFilter::run, this);
             }
-            GuidedFilter(const std::string& _topic): topic(_topic)
+            GuidedFilter(const std::string& _topic, int _picGap): topic(_topic), picGap(_picGap)
             {
                 GuidedFilter();
             }
@@ -56,7 +57,8 @@ namespace pl2i2_slam
                         sensor_msgs::ImagePtr filteredMsg_1 = cvPtr->toImageMsg();
                         pubImg_0.publish(*filteredMsg_0);
                         pubImg_1.publish(*filteredMsg_1);
-
+                        this->picCount += 1;
+                        if(this->picCount > this->picGap) this->picNum = 0;
                     }
 
 
@@ -113,6 +115,8 @@ namespace pl2i2_slam
                 cv::Mat f_enhanced;
                 cv::detailEnhance(enhanced, f_enhanced, 10, 0.15);
                 cv::edgePreservingFilter(f_enhanced, f_enhanced, 1, 64, 0.2);
+
+                this->picNum += 1;
 
                 return f_enhanced;
             }
@@ -331,11 +335,27 @@ namespace pl2i2_slam
                     }
                 }
 
+                std::string darkPath = "/home/jgl/Documents/Projects/PL2I2-SLAM/src/PL2I2-SLAM/imgs/dark_channel/" + std::to_string(this->picNum) + ".jpg";
+                std::string brightPath = "/home/jgl/Documents/Projects/PL2I2-SLAM/src/PL2I2-SLAM/imgs/brightchannel/" + std::to_string(this->picNum) + ".jpg";
+                storeImg(darkch, darkPath);
+                storeImg(brightch, brightPath);
+
                 return std::make_pair(darkch,brightch);
+            }
+
+            void storeImg(const cv::Mat &img, const std::string &path)
+            {
+                if(this->picCount == this->picGap)
+                    cv::imwrite(path, img);
+                return;
             }
             
 
         private:
+            int picGap = 100;
+            int picNum = 0;
+            int picCount = 0;
+            std::thread tProcess;
             std::string topic = "/thermal_image_raw";
             ros::Subscriber subImg;
             ros::Publisher pubImg_0;
@@ -352,7 +372,7 @@ int32_t main(int32_t argc, char **argv)
 {
     ros::init(argc, argv, "guided_filter");
     ros::NodeHandle nh;
-    GuidedFilter guidedFilter("/thermal_image_raw");
+    pl2i2_slam::GuidedFilter guidedFilter("/thermal_image_raw", 100);
 
     ros::spin();
     return 0;
