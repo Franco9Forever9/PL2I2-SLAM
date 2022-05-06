@@ -1,8 +1,10 @@
+#include <vector>
 #include <ros/ros.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
 
 ros::Subscriber subImg;
 ros::Subscriber subImu;

@@ -18,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   tf
 )
 
-find_package(OpenCV 3 REQUIRED)
+find_package(OpenCV 3.2 REQUIRED)
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -217,7 +217,10 @@ include_directories(
 # catkin_add_nosetests(test)
 
 # add_executable(imageProcess src/image_process/image_process.cpp)
-# target_link_libraries(imageProcess ${catkin_LIBRARIES} ${OpenCCV_LIBRARIES})
+# target_link_libraries(imageProcess ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 add_executable(rosmsg_process src/message_process/rosmsg_process.cpp)
-target_link_libraries(rosmsg_process ${catkin_LIBRARIES} ${OpenCCV_LIBRARIES})
+target_link_libraries(rosmsg_process ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+# add_executable(guided_filter_node src/image_process/guidedFilterNode.cpp)
+# target_link_libraries(guided_filter_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
