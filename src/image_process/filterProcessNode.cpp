@@ -124,8 +124,6 @@ namespace pl2i2_slam
                 return;
             }
 
-            
-
             void output_intermediate_image(cv::Mat &img, const std::string &name)
             {
                 std::string outPath = this->outFolder + std::to_string(picNum) + name + std::string(".jpg");
